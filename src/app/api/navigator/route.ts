@@ -1,19 +1,18 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import Groq from "groq-sdk";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   try {
     const { education, field, budget, duration } = await req.json();
 
-    if (!process.env.GEMINI_API_KEY) {
+    if (!process.env.GROQ_API_KEY) {
       return NextResponse.json(
-        { error: "Gemini API key is not configured on the server." },
+        { error: "Groq API key is not configured on the server." },
         { status: 500 }
       );
     }
 
-    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+    const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
     const prompt = `You are an expert international career and education mentor.
 A student from India has provided the following profile for higher education:
@@ -38,20 +37,18 @@ Respond STRICTLY with a valid JSON format (NO extra text, NO markdown formatting
   ]
 }`;
 
-    const result = await model.generateContent(prompt);
-    let text = result.response.text().trim();
-    
-    // Clean up potential markdown blocks if present
-    if (text.startsWith("```json")) {
-      text = text.slice(7, -3).trim();
-    } else if (text.startsWith("```")) {
-      text = text.slice(3, -3).trim();
-    }
+    const completion = await groq.chat.completions.create({
+      messages: [{ role: "system", content: prompt }],
+      model: "llama-3.3-70b-versatile",
+      response_format: { type: "json_object" },
+    });
 
+    const text = completion.choices[0]?.message?.content || "{}";
     const data = JSON.parse(text);
+    
     return NextResponse.json(data);
   } catch (error: any) {
-    console.error("Gemini API Error:", error);
+    console.error("Groq API Error:", error);
     return NextResponse.json(
       { error: "Failed to generate recommendations. Please try again." },
       { status: 500 }
