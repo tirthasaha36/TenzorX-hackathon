@@ -1,125 +1,117 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import "../page.css";
 
 export default function Dashboard() {
-  const [loanStatus, setLoanStatus] = useState("Pre-Approved");
-  const [documents, setDocuments] = useState({
-    offerLetter: false,
-    kyc: false,
-    financials: false,
-  });
+  const [session, setSession] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
 
-  const allUploaded = documents.offerLetter && documents.kyc && documents.financials;
+  useEffect(() => {
+    const fetchSession = async () => {
+      const sessionId = localStorage.getItem("tenzorx_sessionId");
+      if (!sessionId) {
+        window.location.href = "/onboarding";
+        return;
+      }
+
+      try {
+        const res = await fetch(`/api/session?id=${sessionId}`);
+        if (res.ok) {
+          const data = await res.json();
+          setSession(data);
+        } else {
+           window.location.href = "/onboarding";
+        }
+      } catch (e) {
+        console.error("Failed to load session", e);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchSession();
+  }, []);
+
+  if (loading) {
+     return <div style={{height: "100vh", display: "flex", justifyContent: "center", alignItems: "center"}}><div className="dot-blink" style={{color: "white"}}>Loading Hub...</div></div>;
+  }
+
+  let topCountry = "Not Available";
+  if (session?.recommendations) {
+     try {
+       const parsed = JSON.parse(session.recommendations);
+       topCountry = parsed[0]?.country || "Global";
+     } catch (e) {}
+  }
 
   return (
-    <main className="landing-page" style={{ minHeight: "100vh" }}>
+    <main className="landing-page" style={{ minHeight: "100vh", paddingBottom: "4rem" }}>
       <nav className="navbar">
         <div className="container nav-content">
-          <Link href="/" className="logo gradient-text text-xl font-bold">
-            TenzorX
-          </Link>
+          <Link href="/" className="logo gradient-text text-xl font-bold">TenzorX</Link>
           <div className="nav-links">
-            <Link href="/" className="nav-link">Home</Link>
-            <Link href="/navigator" className="nav-link">AI Navigator</Link>
+             <span className="badge" style={{background: "var(--primary)"}}>Active Session</span>
           </div>
         </div>
       </nav>
 
-      <section className="container animate-fade-in" style={{ padding: "4rem 2rem", display: "grid", gridTemplateColumns: "1fr 3fr", gap: "2rem" }}>
-        {/* Sidebar */}
-        <div className="glass-panel" style={{ padding: "2rem", display: "flex", flexDirection: "column", gap: "1.5rem" }}>
-          <div>
-            <h3 style={{ fontSize: "1.2rem", margin: "0 0 0.5rem 0" }}>Student Hub</h3>
-            <p style={{ color: "#94a3b8", fontSize: "0.9rem", margin: 0 }}>Arjun's Dashboard</p>
-          </div>
-          
-          <div style={{ borderTop: "1px solid var(--glass-border)", paddingTop: "1.5rem" }}>
-            <h4 style={{ marginBottom: "1rem", color: "var(--secondary)" }}>Your Journey</h4>
-            <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "1rem", fontSize: "0.95rem" }}>
-              <li style={{ color: "var(--accent)" }}>✓ Explored Universities</li>
-              <li style={{ color: "var(--accent)" }}>✓ Calculated ROI</li>
-              <li style={{ color: "#fff", fontWeight: "bold" }}>● Secure Education Loan</li>
-              <li style={{ color: "#475569" }}>○ Visa Application</li>
-            </ul>
-          </div>
-        </div>
+      <section className="container animate-fade-in" style={{ paddingTop: "6rem", display: "flex", flexDirection: "column", gap: "2rem" }}>
+         <div>
+            <h1 style={{ fontSize: "2.5rem" }}>Student <span className="gradient-text">Hub</span></h1>
+            <p style={{ color: "#94a3b8" }}>Everything you need in one place.</p>
+         </div>
 
-        {/* Main Content */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
-          {/* Status Nudge */}
-          <div className="glass-panel" style={{ background: "rgba(16, 185, 129, 0.1)", border: "1px solid var(--accent)", padding: "1.5rem", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-            <div>
-              <h3 style={{ margin: "0 0 0.5rem 0", color: "#fff" }}>Smart Nudge: Loan Pre-Approval</h3>
-              <p style={{ margin: 0, color: "#cbd5e1", fontSize: "0.95rem" }}>Based on your target ROI and profile, you are eligible for up to <strong>$75,000 (₹62,25,000)</strong> at <strong>8.5% p.a.</strong></p>
+         {/* Quick Stats Banner */}
+         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "1rem" }}>
+            <div className="glass-panel" style={{ padding: "1.5rem", borderLeft: "4px solid var(--primary)" }}>
+               <p style={{ fontSize: "0.85rem", color: "#94a3b8", margin: 0 }}>Top Suggested Country</p>
+               <h3 style={{ fontSize: "1.5rem", margin: "0.5rem 0 0 0" }}>{topCountry}</h3>
             </div>
-            <div className="badge" style={{ background: "var(--accent)", color: "#fff", border: "none" }}>{loanStatus}</div>
-          </div>
-
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2rem" }}>
-            {/* Offer Details */}
-            <div className="glass-panel">
-              <h3 style={{ marginBottom: "1.5rem" }}>Dynamic Loan Offer</h3>
-              <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", borderBottom: "1px solid var(--glass-border)", paddingBottom: "0.5rem" }}>
-                  <span style={{ color: "#94a3b8" }}>Loan Amount</span>
-                  <strong style={{ color: "#fff" }}>$75,000 (₹62.25 L)</strong>
-                </div>
-                <div style={{ display: "flex", justifyContent: "space-between", borderBottom: "1px solid var(--glass-border)", paddingBottom: "0.5rem" }}>
-                  <span style={{ color: "#94a3b8" }}>Interest Rate</span>
-                  <strong style={{ color: "#fff" }}>8.5% (Variable)</strong>
-                </div>
-                <div style={{ display: "flex", justifyContent: "space-between", borderBottom: "1px solid var(--glass-border)", paddingBottom: "0.5rem" }}>
-                  <span style={{ color: "#94a3b8" }}>EMIs Begin</span>
-                  <strong style={{ color: "#fff" }}>6 months post-graduation</strong>
-                </div>
-                <div style={{ display: "flex", justifyContent: "space-between", paddingBottom: "0.5rem" }}>
-                  <span style={{ color: "#94a3b8" }}>Estimated Default Prob.</span>
-                  <strong className="gradient-text">Low Risk (via AI)</strong>
-                </div>
-              </div>
+            <div className="glass-panel" style={{ padding: "1.5rem", borderLeft: "4px solid var(--accent)" }}>
+               <p style={{ fontSize: "0.85rem", color: "#94a3b8", margin: 0 }}>Your Budget (USD)</p>
+               <h3 style={{ fontSize: "1.5rem", margin: "0.5rem 0 0 0" }}>${session?.budget?.toLocaleString()}</h3>
             </div>
-
-            {/* Document Checklist */}
-            <div className="glass-panel">
-              <h3 style={{ marginBottom: "1.5rem" }}>Document Checklist</h3>
-              <p style={{ fontSize: "0.85rem", color: "#94a3b8", marginBottom: "1.5rem" }}>Upload the necessary documents. Our AI agent will auto-fill your application automatically.</p>
-              
-              <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-                <label style={{ display: "flex", alignItems: "center", gap: "1rem", cursor: "pointer" }}>
-                  <input type="checkbox" checked={documents.offerLetter} onChange={(e) => setDocuments({...documents, offerLetter: e.target.checked})} style={{ width: "20px", height: "20px", accentColor: "var(--primary)" }} />
-                  <span style={{ color: documents.offerLetter ? "var(--accent)" : "#fff" }}>University Offer Letter</span>
-                </label>
-                <label style={{ display: "flex", alignItems: "center", gap: "1rem", cursor: "pointer" }}>
-                  <input type="checkbox" checked={documents.kyc} onChange={(e) => setDocuments({...documents, kyc: e.target.checked})} style={{ width: "20px", height: "20px", accentColor: "var(--primary)" }} />
-                  <span style={{ color: documents.kyc ? "var(--accent)" : "#fff" }}>KYC Documents (Aadhar/Passport)</span>
-                </label>
-                <label style={{ display: "flex", alignItems: "center", gap: "1rem", cursor: "pointer" }}>
-                  <input type="checkbox" checked={documents.financials} onChange={(e) => setDocuments({...documents, financials: e.target.checked})} style={{ width: "20px", height: "20px", accentColor: "var(--primary)" }} />
-                  <span style={{ color: documents.financials ? "var(--accent)" : "#fff" }}>Co-applicant Financials (ITR)</span>
-                </label>
-              </div>
-
-              <div style={{ marginTop: "2rem" }}>
-                {!allUploaded ? (
-                   <div style={{ fontSize: "0.85rem", color: "#ef4444", padding: "0.5rem", background: "rgba(239, 68, 68, 0.1)", borderRadius: "8px", textAlign: "center" }}>
-                     Please tick all documents to simulate upload and proceed.
-                   </div>
-                ) : (
-                  <button 
-                    onClick={() => setLoanStatus("Application Under Review")}
-                    className="btn-primary" 
-                    style={{ width: "100%" }}
-                  >
-                    Simulate AI Auto-Submit
-                  </button>
-                )}
-              </div>
+            <div className="glass-panel" style={{ padding: "1.5rem", borderLeft: "4px solid var(--secondary)" }}>
+               <p style={{ fontSize: "0.85rem", color: "#94a3b8", margin: 0 }}>Academic Profile (CGPA)</p>
+               <h3 style={{ fontSize: "1.5rem", margin: "0.5rem 0 0 0" }}>{session?.cgpa}</h3>
             </div>
-          </div>
-        </div>
+         </div>
+
+         {/* Navigation Hub */}
+         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2rem", marginTop: "1rem" }}>
+            <Link href="/recommendations" style={{ textDecoration: "none", color: "inherit" }}>
+               <div className="glass-panel" style={{ border: "1px solid rgba(139, 92, 246, 0.3)", padding: "2rem", transition: "transform 0.2s" }}>
+                  <div style={{ fontSize: "2rem", marginBottom: "1rem" }}>🎓</div>
+                  <h3>AI Recommendations</h3>
+                  <p style={{ color: "#94a3b8", fontSize: "0.9rem" }}>View detailed university pathways, courses, and why they fit your exact profile.</p>
+               </div>
+            </Link>
+
+            <Link href="/roi-calculator" style={{ textDecoration: "none", color: "inherit" }}>
+               <div className="glass-panel" style={{ border: "1px solid rgba(16, 185, 129, 0.3)", padding: "2rem", transition: "transform 0.2s" }}>
+                  <div style={{ fontSize: "2rem", marginBottom: "1rem" }}>📈</div>
+                  <h3>ROI & Insights</h3>
+                  <p style={{ color: "#94a3b8", fontSize: "0.9rem" }}>Visualize the financial breakeven of your global education with interactive charts.</p>
+               </div>
+            </Link>
+
+            <Link href="/loans" style={{ textDecoration: "none", color: "inherit" }}>
+               <div className="glass-panel" style={{ border: "1px solid rgba(236, 72, 153, 0.3)", padding: "2rem", transition: "transform 0.2s" }}>
+                  <div style={{ fontSize: "2rem", marginBottom: "1rem" }}>💰</div>
+                  <h3>Education Loans</h3>
+                  <p style={{ color: "#94a3b8", fontSize: "0.9rem" }}>Check real-time loan eligibility, EMI structures, and apply instantly.</p>
+               </div>
+            </Link>
+
+            <Link href="/next-steps" style={{ textDecoration: "none", color: "inherit" }}>
+               <div className="glass-panel" style={{ border: "1px solid rgba(245, 158, 11, 0.3)", padding: "2rem", transition: "transform 0.2s" }}>
+                  <div style={{ fontSize: "2rem", marginBottom: "1rem" }}>📂</div>
+                  <h3>Application Next Steps</h3>
+                  <p style={{ color: "#94a3b8", fontSize: "0.9rem" }}>Track your timeline: IELTS preparation, SOP drafting, and final submission dates.</p>
+               </div>
+            </Link>
+         </div>
       </section>
     </main>
   );

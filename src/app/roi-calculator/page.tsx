@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import "../page.css";
 
@@ -10,22 +10,38 @@ export default function ROICalculator() {
   const [duration, setDuration] = useState<number>(2);
   const [expectedSalary, setExpectedSalary] = useState<number>(85000);
 
+  useEffect(() => {
+    const fetchSession = async () => {
+      const sessionId = localStorage.getItem("tenzorx_sessionId");
+      if (sessionId) {
+        try {
+          const res = await fetch(`/api/session?id=${sessionId}`);
+          if (res.ok) {
+            const data = await res.json();
+            if (data.budget) {
+               // Roughly allocate 70% to tuition and 30% to living per year over a 2 year period
+               const yearlyTotal = data.budget / 2;
+               setTuition(yearlyTotal * 0.7);
+               setLiving(yearlyTotal * 0.3);
+            }
+          }
+        } catch (e) {}
+      }
+    };
+    fetchSession();
+  }, []);
+
   const totalCost = (tuition + living) * duration;
   const breakEvenYears = totalCost / (expectedSalary * 0.3); // Assumes 30% of salary goes to repayment
   
   const EXCHANGE_RATE = 83; // Approx 1 USD = 83 INR
-  const formatCurrency = (usd: number) => `$${usd.toLocaleString()} (₹${(usd * EXCHANGE_RATE).toLocaleString('en-IN')})`;
+  const formatCurrency = (usd: number) => `$${usd.toLocaleString('en-US', {maximumFractionDigits: 0})} (₹${(usd * EXCHANGE_RATE).toLocaleString('en-IN', {maximumFractionDigits: 0})})`;
 
   return (
-    <main className="landing-page" style={{ minHeight: "100vh" }}>
+    <main className="landing-page" style={{ minHeight: "100vh", paddingBottom: "4rem" }}>
       <nav className="navbar">
         <div className="container nav-content">
-          <Link href="/" className="logo gradient-text text-xl font-bold">
-            TenzorX
-          </Link>
-          <div className="nav-links">
-            <Link href="/" className="nav-link">Home</Link>
-          </div>
+          <Link href="/dashboard" className="logo gradient-text text-xl font-bold">← Back to Hub</Link>
         </div>
       </nav>
 
@@ -117,7 +133,7 @@ export default function ROICalculator() {
 
             <hr style={{ border: "none", borderTop: "1px solid var(--glass-border)", margin: "2rem 0" }} />
 
-            <Link href="/dashboard" className="btn-primary" style={{ width: "100%" }}>
+            <Link href="/loans" className="btn-primary" style={{ width: "100%", textAlign: "center", display: "inline-block" }}>
               Get Pre-Approved Loan Offer
             </Link>
           </div>
