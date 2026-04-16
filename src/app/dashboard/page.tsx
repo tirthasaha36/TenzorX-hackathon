@@ -50,10 +50,10 @@ export default function Dashboard() {
         {/* Main Content */}
         <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
           {/* Status Nudge */}
-           <div className="glass-panel" style={{ background: "rgba(16, 185, 129, 0.1)", border: "1px solid var(--accent)", padding: "1.5rem", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <div className="glass-panel" style={{ background: "rgba(16, 185, 129, 0.1)", border: "1px solid var(--accent)", padding: "1.5rem", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <div>
               <h3 style={{ margin: "0 0 0.5rem 0", color: "#fff" }}>Smart Nudge: Loan Pre-Approval</h3>
-              <p style={{ margin: 0, color: "#cbd5e1", fontSize: "0.95rem" }}>Based on your target ROI and profile, you are eligible for up to <strong>$75,000</strong> at <strong>8.5% p.a.</strong></p>
+              <p style={{ margin: 0, color: "#cbd5e1", fontSize: "0.95rem" }}>Based on your target ROI and profile, you are eligible for up to <strong>$75,000 (₹62,25,000)</strong> at <strong>8.5% p.a.</strong></p>
             </div>
             <div className="badge" style={{ background: "var(--accent)", color: "#fff", border: "none" }}>{loanStatus}</div>
           </div>
@@ -65,7 +65,7 @@ export default function Dashboard() {
               <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
                 <div style={{ display: "flex", justifyContent: "space-between", borderBottom: "1px solid var(--glass-border)", paddingBottom: "0.5rem" }}>
                   <span style={{ color: "#94a3b8" }}>Loan Amount</span>
-                  <strong style={{ color: "#fff" }}>$75,000</strong>
+                  <strong style={{ color: "#fff" }}>$75,000 (₹62.25 L)</strong>
                 </div>
                 <div style={{ display: "flex", justifyContent: "space-between", borderBottom: "1px solid var(--glass-border)", paddingBottom: "0.5rem" }}>
                   <span style={{ color: "#94a3b8" }}>Interest Rate</span>

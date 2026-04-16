@@ -12,6 +12,9 @@ export default function ROICalculator() {
 
   const totalCost = (tuition + living) * duration;
   const breakEvenYears = totalCost / (expectedSalary * 0.3); // Assumes 30% of salary goes to repayment
+  
+  const EXCHANGE_RATE = 83; // Approx 1 USD = 83 INR
+  const formatCurrency = (usd: number) => `$${usd.toLocaleString()} (₹${(usd * EXCHANGE_RATE).toLocaleString('en-IN')})`;
 
   return (
     <main className="landing-page" style={{ minHeight: "100vh" }}>
@@ -43,7 +46,7 @@ export default function ROICalculator() {
             
             <div style={{ marginBottom: "1.5rem" }}>
               <label style={{ display: "block", marginBottom: "0.5rem" }}>
-                Annual Tuition Fee ($): <span className="gradient-text font-bold">{tuition.toLocaleString()}</span>
+                Annual Tuition Fee: <span className="gradient-text font-bold">{formatCurrency(tuition)}</span>
               </label>
               <input 
                 type="range" 
@@ -56,7 +59,7 @@ export default function ROICalculator() {
 
             <div style={{ marginBottom: "1.5rem" }}>
               <label style={{ display: "block", marginBottom: "0.5rem" }}>
-                Annual Living Expenses ($): <span className="gradient-text font-bold">{living.toLocaleString()}</span>
+                Annual Living Expenses: <span className="gradient-text font-bold">{formatCurrency(living)}</span>
               </label>
               <input 
                 type="range" 
@@ -82,7 +85,7 @@ export default function ROICalculator() {
 
             <div style={{ marginBottom: "1.5rem" }}>
               <label style={{ display: "block", marginBottom: "0.5rem" }}>
-                Expected Graduate Salary ($): <span className="gradient-text font-bold">{expectedSalary.toLocaleString()}</span>
+                Expected Graduate Salary: <span className="gradient-text font-bold">{formatCurrency(expectedSalary)}</span>
               </label>
               <input 
                 type="range" 
@@ -99,7 +102,7 @@ export default function ROICalculator() {
             
             <div style={{ marginBottom: "2rem" }}>
               <p style={{ color: "#94a3b8", fontSize: "0.9rem" }}>Total Education Cost</p>
-              <h2 style={{ fontSize: "2.5rem", color: "#fff" }}>${totalCost.toLocaleString()}</h2>
+              <h2 style={{ fontSize: "2.5rem", color: "#fff", lineHeight: "1.1" }}>{formatCurrency(totalCost)}</h2>
             </div>
 
             <div style={{ marginBottom: "2rem" }}>

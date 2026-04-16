@@ -30,7 +30,7 @@ Respond STRICTLY with a valid JSON format (NO extra text, NO markdown formatting
       "title": "Degree Name",
       "country": "Country Name",
       "top_universities": ["Uni 1", "Uni 2"],
-      "estimated_cost": "Cost string",
+      "estimated_cost": "Cost string (specify both USD and INR equivalent ₹)",
       "roi_score": "High/Medium/Low",
       "why_it_fits": "Brief explanation"
     }
