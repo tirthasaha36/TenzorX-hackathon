@@ -93,17 +93,24 @@
 }
 
 .hero-title {
-  font-size: 4rem;
-  letter-spacing: -1px;
-  line-height: 1.1;
-  margin-bottom: 1.5rem;
+  font-size: 3.5rem;
+  font-weight: 800;
+  letter-spacing: -2px;
+  line-height: 1;
+  margin-bottom: 2rem;
+}
+
+.text-secondary {
+  color: var(--secondary);
+  text-shadow: 0 0 20px rgba(14, 165, 233, 0.3);
 }
 
 .hero-subtitle {
-  font-size: 1.125rem;
-  color: #cbd5e1;
-  margin-bottom: 2.5rem;
-  max-width: 500px;
+  font-size: 1.25rem;
+  color: #94a3b8;
+  margin-bottom: 3rem;
+  max-width: 600px;
+  line-height: 1.6;
 }
 
 .hero-cta {

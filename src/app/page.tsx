@@ -25,14 +25,16 @@ export default function Home() {
         <div className="hero-text">
           <div className="badge">✨ AI-Powered Student Ecosystem</div>
           <h1 className="hero-title">
-            <span className="gradient-text">Plan Your Study Abroad Journey with AI</span>
+            <span className="gradient-text">Find Your Dream University & </span>
+            <span className="text-secondary">Finance It</span>
+            <span className="gradient-text"> — All in One Place</span>
           </h1>
           <p className="hero-subtitle">
-            From discovering the perfect university with our AI Career Navigator to securing the best education loan. Uncomplicate your study abroad journey.
+            Get personalized university recommendations, predict your admission chances, calculate ROI, and secure the best education loan — all in one AI-powered platform.
           </p>
           <div className="hero-cta">
             <Link href="/onboarding" className="btn-primary btn-lg">
-              Get Started
+              Start Your Journey
             </Link>
           </div>
         </div>
