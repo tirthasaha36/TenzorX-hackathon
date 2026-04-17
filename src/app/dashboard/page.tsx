@@ -78,39 +78,84 @@ export default function Dashboard() {
             </div>
          </div>
 
-         {/* Navigation Hub */}
-         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2rem", marginTop: "1rem" }}>
-            <Link href="/recommendations" style={{ textDecoration: "none", color: "inherit" }}>
-               <div className="glass-panel" style={{ border: "1px solid rgba(139, 92, 246, 0.3)", padding: "2rem", transition: "transform 0.2s" }}>
-                  <div style={{ fontSize: "2rem", marginBottom: "1rem" }}>🎓</div>
-                  <h3>AI Recommendations</h3>
-                  <p style={{ color: "#94a3b8", fontSize: "0.9rem" }}>View detailed university pathways, courses, and why they fit your exact profile.</p>
-               </div>
-            </Link>
+         {/* Navigation Hub & Passport */}
+         <div style={{ display: "grid", gridTemplateColumns: "1.2fr 1fr", gap: "2rem", marginTop: "1rem" }}>
+            
+            {/* Main Navigation Grid */}
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.5rem" }}>
+              <Link href="/recommendations" style={{ textDecoration: "none", color: "inherit" }}>
+                <div className="glass-panel" style={{ border: "1px solid rgba(139, 92, 246, 0.3)", padding: "1.5rem", transition: "transform 0.2s", height: "100%" }}>
+                    <div style={{ fontSize: "1.8rem", marginBottom: "0.8rem" }}>🎓</div>
+                    <h3 style={{ fontSize: "1.1rem" }}>AI Recommendations</h3>
+                    <p style={{ color: "#94a3b8", fontSize: "0.85rem" }}>View detailed university pathways mapped to your exact profile.</p>
+                </div>
+              </Link>
 
-            <Link href="/roi-calculator" style={{ textDecoration: "none", color: "inherit" }}>
-               <div className="glass-panel" style={{ border: "1px solid rgba(16, 185, 129, 0.3)", padding: "2rem", transition: "transform 0.2s" }}>
-                  <div style={{ fontSize: "2rem", marginBottom: "1rem" }}>📈</div>
-                  <h3>ROI & Insights</h3>
-                  <p style={{ color: "#94a3b8", fontSize: "0.9rem" }}>Visualize the financial breakeven of your global education with interactive charts.</p>
-               </div>
-            </Link>
+              <Link href="/roi-calculator" style={{ textDecoration: "none", color: "inherit" }}>
+                <div className="glass-panel" style={{ border: "1px solid rgba(16, 185, 129, 0.3)", padding: "1.5rem", transition: "transform 0.2s", height: "100%" }}>
+                    <div style={{ fontSize: "1.8rem", marginBottom: "0.8rem" }}>📈</div>
+                    <h3 style={{ fontSize: "1.1rem" }}>ROI & Insights</h3>
+                    <p style={{ color: "#94a3b8", fontSize: "0.85rem" }}>Visualize the financial breakeven with interactive charts.</p>
+                </div>
+              </Link>
 
-            <Link href="/loans" style={{ textDecoration: "none", color: "inherit" }}>
-               <div className="glass-panel" style={{ border: "1px solid rgba(236, 72, 153, 0.3)", padding: "2rem", transition: "transform 0.2s" }}>
-                  <div style={{ fontSize: "2rem", marginBottom: "1rem" }}>💰</div>
-                  <h3>Education Loans</h3>
-                  <p style={{ color: "#94a3b8", fontSize: "0.9rem" }}>Check real-time loan eligibility, EMI structures, and apply instantly.</p>
-               </div>
-            </Link>
+              <Link href="/loans" style={{ textDecoration: "none", color: "inherit" }}>
+                <div className="glass-panel" style={{ border: "1px solid rgba(236, 72, 153, 0.3)", padding: "1.5rem", transition: "transform 0.2s", height: "100%" }}>
+                    <div style={{ fontSize: "1.8rem", marginBottom: "0.8rem" }}>💰</div>
+                    <h3 style={{ fontSize: "1.1rem" }}>Education Loans</h3>
+                    <p style={{ color: "#94a3b8", fontSize: "0.85rem" }}>Check real-time loan eligibility and EMI structures.</p>
+                </div>
+              </Link>
 
-            <Link href="/next-steps" style={{ textDecoration: "none", color: "inherit" }}>
-               <div className="glass-panel" style={{ border: "1px solid rgba(245, 158, 11, 0.3)", padding: "2rem", transition: "transform 0.2s" }}>
-                  <div style={{ fontSize: "2rem", marginBottom: "1rem" }}>📂</div>
-                  <h3>Application Next Steps</h3>
-                  <p style={{ color: "#94a3b8", fontSize: "0.9rem" }}>Track your timeline: IELTS preparation, SOP drafting, and final submission dates.</p>
-               </div>
-            </Link>
+              <Link href="/next-steps" style={{ textDecoration: "none", color: "inherit" }}>
+                <div className="glass-panel" style={{ border: "1px solid rgba(245, 158, 11, 0.3)", padding: "1.5rem", transition: "transform 0.2s", height: "100%" }}>
+                    <div style={{ fontSize: "1.8rem", marginBottom: "0.8rem" }}>📂</div>
+                    <h3 style={{ fontSize: "1.1rem" }}>Next Steps</h3>
+                    <p style={{ color: "#94a3b8", fontSize: "0.85rem" }}>Track your timeline: IELTS, SOP, and submission dates.</p>
+                </div>
+              </Link>
+            </div>
+
+            {/* Academic Passport Card */}
+            <div className="glass-panel" style={{ background: "rgba(255,255,255,0.03)", padding: "2rem", display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+                <div>
+                  <h3 style={{ margin: 0 }}>Academic Passport</h3>
+                  <p style={{ color: "#94a3b8", fontSize: "0.85rem" }}>Verified Student Profile</p>
+                </div>
+                <div className="badge" style={{ background: "var(--primary)" }}>Tier 1 Eligibility</div>
+              </div>
+
+              <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", borderBottom: "1px solid rgba(255,255,255,0.05)", paddingBottom: "0.5rem" }}>
+                  <span style={{ color: "#94a3b8", fontSize: "0.9rem" }}>Degree</span>
+                  <span style={{ fontWeight: 600 }}>{session?.degree || "N/A"}</span>
+                </div>
+                <div style={{ display: "flex", justifyContent: "space-between", borderBottom: "1px solid rgba(255,255,255,0.05)", paddingBottom: "0.5rem" }}>
+                  <span style={{ color: "#94a3b8", fontSize: "0.9rem" }}>University</span>
+                  <span style={{ fontWeight: 600 }}>{session?.university || "Global Grad"}</span>
+                </div>
+                <div style={{ display: "flex", justifyContent: "space-between", borderBottom: "1px solid rgba(255,255,255,0.05)", paddingBottom: "0.5rem" }}>
+                  <span style={{ color: "#94a3b8", fontSize: "0.9rem" }}>IELTS / TOEFL</span>
+                  <span style={{ fontWeight: 600, color: "var(--accent)" }}>{session?.ieltsScore || "Not Taken"}</span>
+                </div>
+                <div style={{ display: "flex", justifyContent: "space-between", borderBottom: "1px solid rgba(255,255,255,0.05)", paddingBottom: "0.5rem" }}>
+                  <span style={{ color: "#94a3b8", fontSize: "0.9rem" }}>Work Experience</span>
+                  <span style={{ fontWeight: 600 }}>{session?.workExp || 0} Years</span>
+                </div>
+                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                  <span style={{ color: "#94a3b8", fontSize: "0.9rem" }}>Target Intake</span>
+                  <span style={{ fontWeight: 600 }}>{session?.intake || "Fall 2026"}</span>
+                </div>
+              </div>
+
+              <div style={{ marginTop: "auto", background: "rgba(139, 92, 246, 0.1)", padding: "1rem", borderRadius: "12px", border: "1px dashed var(--primary)" }}>
+                <p style={{ margin: 0, fontSize: "0.85rem", color: "#e2e8f0" }}>
+                  💡 <span style={{ fontWeight: 600 }}>AI Tip:</span> Your {session?.ieltsScore >= 7.5 ? "excellent" : "good"} IELTS score makes you a top candidate for IVY League scholarship programs.
+                </p>
+              </div>
+            </div>
+
          </div>
       </section>
     </main>

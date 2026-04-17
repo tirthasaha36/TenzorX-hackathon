@@ -3,7 +3,11 @@ import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   try {
-    const { education, field, budget, duration } = await req.json();
+    const { 
+      education, university, cgpa, 
+      ielts, gre, workExp, 
+      budget, country, intake 
+    } = await req.json();
 
     if (!process.env.GROQ_API_KEY) {
       return NextResponse.json(
@@ -15,11 +19,15 @@ export async function POST(req: Request) {
     const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
     const prompt = `You are an expert international career and education mentor.
-A student from India has provided the following profile for higher education:
-- Current Education Level: ${education}
-- Desired Field of Study: ${field}
+A student from India has provided the following comprehensive profile:
+- Current Degree: ${education} from ${university}
+- Academic Standing: ${cgpa} CGPA
+- English Proficiency (IELTS/TOEFL): ${ielts}
+- Standardized Tests (GRE/GMAT): ${gre || "N/A"}
+- Professional Experience: ${workExp} years
+- Target Intake: ${intake}
 - Estimated Total Budget (USD): $${budget}
-- Preferred Study Duration: ${duration} years
+- Preferred Country: ${country}
 
 Recommend exactly 3 optimal career/education pathways.
 Consider ROI, post-study work visas, and cost of living.

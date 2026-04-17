@@ -1,18 +1,27 @@
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/lib/db";
 import { NextResponse } from "next/server";
-
-const prisma = new PrismaClient();
 
 export async function POST(req: Request) {
   try {
-    const { cgpa, budget, preferredCountry, recommendations } = await req.json();
+    const { 
+      degree, university, cgpa, 
+      ieltsScore, greScore, workExp, 
+      budget, preferredCountry, intake, 
+      recommendations 
+    } = await req.json();
 
     const session = await prisma.session.create({
       data: {
-        cgpa: parseFloat(cgpa) || null,
-        budget: parseFloat(budget) || null,
+        degree,
+        university,
+        cgpa: cgpa ? parseFloat(cgpa) : null,
+        ieltsScore: ieltsScore ? parseFloat(ieltsScore) : null,
+        greScore: greScore ? parseInt(greScore) : null,
+        workExp: workExp ? parseInt(workExp) : null,
+        budget: budget ? parseFloat(budget) : null,
         preferredCountry,
-        recommendations
+        intake,
+        recommendations: typeof recommendations === 'string' ? recommendations : JSON.stringify(recommendations)
       }
     });
 

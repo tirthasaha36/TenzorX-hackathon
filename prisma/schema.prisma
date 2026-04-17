@@ -12,9 +12,21 @@ datasource db {
 
 model Session {
   id               String   @id @default(uuid())
+  // Academic Background
+  degree           String?
+  university       String?
   cgpa             Float?
+  
+  // Global readiness
+  ieltsScore       Float?
+  greScore         Int?
+  workExp          Int?    // Years of experience
+  
+  // Goals
   budget           Float?
   preferredCountry String?
+  intake           String? // e.g., Fall 2026
+  
   recommendations  String?  // Store Groq JSON string
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
