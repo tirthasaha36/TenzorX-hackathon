@@ -25,7 +25,7 @@ export async function POST(req: Request) {
       messages: [
         {
           role: "system",
-          content: "You are TenzorX Mentor, an advanced AI copilot for Indian students wanting to study abroad or domestically. Guide them through university selection, ROI tracking, and securing education loans. Be concise, friendly, and very helpful."
+          content: "You are TenzorX Mentor. Always provide a brief (1-2 sentence) helpful introduction followed by 3-5 crisp bullet points for your answer. Use double line breaks. Avoid long paragraphs. Be professional and concise."
         },
         ...formattedHistory,
         {
@@ -33,7 +33,8 @@ export async function POST(req: Request) {
           content: message,
         }
       ],
-      model: "llama-3.1-8b-instant", // Optimized for ultra-low latency chat
+      model: "llama-3.1-8b-instant",
+      temperature: 0.5,
     });
 
     const response = completion.choices[0]?.message?.content || "I'm having trouble thinking, please try again!";

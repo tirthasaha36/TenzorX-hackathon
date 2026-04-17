@@ -68,40 +68,43 @@ export default function ChatWidget() {
 
       {isOpen && (
         <div className="glass-panel" style={{
-          position: "fixed", bottom: "100px", right: "30px", width: "350px", height: "500px",
+          position: "fixed", bottom: "100px", right: "30px", width: "420px", height: "600px",
           zIndex: 1000, display: "flex", flexDirection: "column", padding: "0", overflow: "hidden"
         }}>
-          <div style={{ background: "rgba(109,40,217,0.2)", padding: "1rem", borderBottom: "1px solid var(--glass-border)" }}>
-            <h3 style={{ margin: 0, fontSize: "1.1rem" }}>TenzorX Mentor</h3>
-            <p style={{ margin: 0, fontSize: "0.8rem", color: "#94a3b8" }}>AI Copilot</p>
+          <div style={{ background: "rgba(109,40,217,0.2)", padding: "1.2rem", borderBottom: "1px solid var(--glass-border)" }}>
+            <h3 style={{ margin: 0, fontSize: "1.2rem" }}>TenzorX Mentor</h3>
+            <p style={{ margin: 0, fontSize: "0.85rem", color: "#94a3b8" }}>AI Copilot</p>
           </div>
 
-          <div style={{ flex: 1, padding: "1rem", overflowY: "auto", display: "flex", flexDirection: "column", gap: "1rem" }}>
+          <div 
+            className="hide-scrollbar"
+            style={{ flex: 1, padding: "1.5rem", overflowY: "auto", display: "flex", flexDirection: "column", gap: "1.2rem" }}
+          >
             {history.map((msg, i) => (
               <div key={i} style={{ 
                 alignSelf: msg.user === "User" ? "flex-end" : "flex-start",
                 background: msg.user === "User" ? "var(--primary)" : "rgba(255,255,255,0.1)",
-                padding: "0.75rem 1rem", borderRadius: "12px", maxWidth: "85%",
-                fontSize: "0.9rem", lineHeight: "1.4"
+                padding: "0.85rem 1.2rem", borderRadius: "14px", maxWidth: "85%",
+                fontSize: "0.95rem", lineHeight: "1.6", whiteSpace: "pre-wrap"
               }}>
                 {msg.text}
               </div>
             ))}
             {loading && (
-              <div style={{ alignSelf: "flex-start", background: "rgba(255,255,255,0.1)", padding: "0.75rem 1rem", borderRadius: "12px" }}>
+              <div style={{ alignSelf: "flex-start", background: "rgba(255,255,255,0.1)", padding: "0.85rem 1.2rem", borderRadius: "12px" }}>
                 <span className="dot-blink">...</span>
               </div>
             )}
             <div ref={chatBottomRef} />
           </div>
 
-          <form onSubmit={handleSend} style={{ display: "flex", padding: "1rem", borderTop: "1px solid var(--glass-border)", background: "rgba(0,0,0,0.2)" }}>
+          <form onSubmit={handleSend} style={{ display: "flex", padding: "1.2rem", borderTop: "1px solid var(--glass-border)", background: "rgba(0,0,0,0.2)" }}>
             <input 
               type="text" value={message} onChange={(e) => setMessage(e.target.value)}
               placeholder="Ask anything..."
-              style={{ flex: 1, background: "transparent", border: "none", color: "#fff", outline: "none" }}
+              style={{ flex: 1, background: "transparent", border: "none", color: "#fff", outline: "none", fontSize: "1rem" }}
             />
-            <button type="submit" disabled={loading} style={{ background: "transparent", border: "none", color: "var(--secondary)", cursor: "pointer", fontWeight: "bold" }}>
+            <button type="submit" disabled={loading} style={{ background: "transparent", border: "none", color: "var(--secondary)", cursor: "pointer", fontWeight: "bold", paddingLeft: "1rem" }}>
               Send
             </button>
           </form>
@@ -117,6 +120,17 @@ export default function ChatWidget() {
         .pulse-anim { animation: pulseChat 2s infinite; }
         .dot-blink { animation: blink 1.4s infinite both; }
         @keyframes blink { 0% { opacity: 0.2; } 20% { opacity: 1; } 100% { opacity: 0.2; } }
+        
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .hide-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
+
+        /* Hide scrollbar for IE, Edge and Firefox */
+        .hide-scrollbar {
+          -ms-overflow-style: none;  /* IE and Edge */
+          scrollbar-width: none;  /* Firefox */
+        }
       `}</style>
     </>
   );
